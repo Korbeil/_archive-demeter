@@ -1,6 +1,9 @@
 # Demeter
 
-This is the Demeter project. This project is focused to the management of character and accounts and their Planetary Interaction in the MMORPG Eve Online.
+---
+
+This is the Demeter project.
+This project is focused to the management of character and accounts and their Planetary Interaction in the MMORPG Eve Online.
 
 ---
 
