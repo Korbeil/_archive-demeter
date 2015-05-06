@@ -9,7 +9,7 @@ This project is focused to the management of character and accounts and their Pl
 ---
 
 What we can offer ?
-- A simple connection with (EvE SSO)[https://developers.eveonline.com/resource/single-sign-on] or with a standard email/password account.
+- A simple connection with [EvE SSO](https://developers.eveonline.com/resource/single-sign-on) or with a standard email/password account.
 - A simple overview for each character with all planets and what they're doing.
 - A modulable overview (You can choose what you want to show !)
 - A simple view of the POS you're using (if you use one) and how much fuel is remaining.
