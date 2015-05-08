@@ -34,6 +34,7 @@
 | type           | enum | N       | N      | N         | 'email' or 'eveo'                  |
 | identifier     | text | N       | Y      | N         | email or characterid of the user   |
 | password       | text | N       | N      | N         | hashed password (nothing is eveo)  |
+| created        | int  | N       | N      | N         | created timestamp                  |
 | lastConnection | int  | N       | N      | N         | last connection timestamp          |
 | isFree         | enum | N       | N      | N         | if this is a free account          |
 | hasPaid        | enum | N       | N      | N         | if the account has paid this month |
