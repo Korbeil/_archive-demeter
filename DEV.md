@@ -28,13 +28,15 @@
 
 ### Table: `user` prefix: `usr_`
 
-| Fields         | Type | Primary | Unique | Increment | Contains ?                        |
-| -------------- | ---- | ------- | ------ | --------- | --------------------------------- |
-| id             | int  | Y       | Y      | Y         | id of the user                    |
-| type           | enum | N       | N      | N         | 'email' or 'eveo'                 |
-| identifier     | text | N       | Y      | N         | email or characterid of the user  |
-| password       | text | N       | N      | N         | hashed password (nothing is eveo) |
-| lastConnection | int  | N       | N      | N         | last connection timestamp         |
+| Fields         | Type | Primary | Unique | Increment | Contains ?                         |
+| -------------- | ---- | ------- | ------ | --------- | ---------------------------------- |
+| id             | int  | Y       | Y      | Y         | id of the user                     |
+| type           | enum | N       | N      | N         | 'email' or 'eveo'                  |
+| identifier     | text | N       | Y      | N         | email or characterid of the user   |
+| password       | text | N       | N      | N         | hashed password (nothing is eveo)  |
+| lastConnection | int  | N       | N      | N         | last connection timestamp          |
+| isFree         | enum | N       | N      | N         | if this is a free account          |
+| hasPaid        | enum | N       | N      | N         | if the account has paid this month |
 
 ### Table: `apikey` prefix: `apk_`
 
