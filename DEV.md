@@ -47,7 +47,6 @@
 | user   | int  | N       | N      | N         | id of the user                             |
 | keyId  | text | N       | Y      | N         | keyId from the api key                     |
 | vCode  | text | N       | Y      | N         | vCode from the api key                     |
-| type   | enum | N       | N      | N         | type of the api key (account or character) |
 
 ### Table: `pos` prefix: `pos_`
 
