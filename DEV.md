@@ -47,7 +47,7 @@
 | user   | int  | N       | N      | N         | id of the user                                                            |
 | keyId  | text | N       | Y      | N         | keyId from the api key                                                    |
 | vCode  | text | N       | Y      | N         | vCode from the api key                                                    |
-| step   | enum | N       | N      | N         | when in `pending` step, there is no character selection (`pending`, `ok`) |
+| status | enum | N       | N      | N         | when in `pending` step, there is no character selection (`pending`, `ok`) |
 
 ### Table: `character` prefix: `char_`
 
