@@ -51,10 +51,11 @@
 
 ### Table: `character` prefix: `char_`
 
-| Fields         | Type | Primary | Unique | Increment | Contains ?                         |
-| -------------- | ---- | ------- | ------ | --------- | ---------------------------------- |
-| id             | int  | Y       | Y      | Y         | internal id of the char            |
-| apikey         | int  | N       | N      | N         | id of the linked apikey            |
-| charid         | int  | N       | Y      | N         | eve id of the character            |
-| created        | int  | N       | N      | N         | created timestamp                  |
-| lastUpdate     | int  | N       | N      | N         | last update timestamp              |
+| Fields         | Type | Primary | Unique | Increment | Contains ?                          |
+| -------------- | ---- | ------- | ------ | --------- | ----------------------------------- |
+| id             | int  | Y       | Y      | Y         | internal id of the char             |
+| apikey         | int  | N       | N      | N         | id of the linked apikey             |
+| charid         | int  | N       | Y      | N         | eve id of the character             |
+| skills         | text | N       | N      | N         | skills of the character (serialize) |
+| created        | int  | N       | N      | N         | created timestamp                   |
+| lastUpdate     | int  | N       | N      | N         | last update timestamp               |
