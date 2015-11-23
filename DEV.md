@@ -28,29 +28,34 @@
 
 ### Table: `user` prefix: `usr_`
 
-| Fields         | Type | Primary | Unique | Increment | Contains ?                |
-| -------------- | ---- | ------- | ------ | --------- | ------------------------- |
-| id             | int  | Y       | Y      | Y         | id of the user            |
-| email          | text | N       | Y      | N         | email of the user         |
-| password       | text | N       | N      | N         | hashed password           |
-| lastConnection | int  | N       | N      | N         | last connection timestamp |
+| Fields         | Type | Primary | Unique | Increment | Contains ?                         |
+| -------------- | ---- | ------- | ------ | --------- | ---------------------------------- |
+| id             | int  | Y       | Y      | Y         | id of the user                     |
+| type           | enum | N       | N      | N         | 'email' or 'eveo'                  |
+| identifier     | text | N       | Y      | N         | email or characterid of the user   |
+| password       | text | N       | N      | N         | hashed password (nothing is eveo)  |
+| created        | int  | N       | N      | N         | created timestamp                  |
+| lastConnection | int  | N       | N      | N         | last connection timestamp          |
+| isFree         | enum | N       | N      | N         | if this is a free account          |
+| hasPaid        | enum | N       | N      | N         | if the account has paid this month |
 
 ### Table: `apikey` prefix: `apk_`
 
-| Fields | Type | Primary | Unique | Increment | Contains ?                                 |
-| ------ | ---- | ------- | ------ | --------- | ------------------------------------------ |
-| id     | int  | Y       | Y      | Y         | id of the api key                          |
-| user   | int  | N       | N      | N         | id of the user                             |
-| keyId  | text | N       | Y      | N         | keyId from the api key                     |
-| vCode  | text | N       | Y      | N         | vCode from the api key                     |
-| type   | enum | N       | N      | N         | type of the api key (account or character) |
+| Fields | Type | Primary | Unique | Increment | Contains ?                                                                |
+| ------ | ---- | ------- | ------ | --------- | ------------------------------------------------------------------------- |
+| id     | int  | Y       | Y      | Y         | id of the api key                                                         |
+| user   | int  | N       | N      | N         | id of the user                                                            |
+| keyId  | text | N       | Y      | N         | keyId from the api key                                                    |
+| vCode  | text | N       | Y      | N         | vCode from the api key                                                    |
+| status | enum | N       | N      | N         | when in `pending` step, there is no character selection (`pending`, `ok`) |
 
-### Table: `pos` prefix: `pos_`
+### Table: `character` prefix: `char_`
 
-| Fields | Type | Primary | Unique | Increment | Contains ?               |
-| -------| ---- | ------- | ------ | --------- | ------------------------ |
-| id     | int  | Y       | Y      | Y         | id of the pos            |
-| user   | int  | N       | N      | N         | id of the user           |
-| posId  | int  | N       | N      | N         | item id of the pos (api) |
-| keyId  | text | N       | Y      | N         | keyId from the api key   |
-| vCode  | text | N       | Y      | N         | vCode from the api key   |
+| Fields         | Type | Primary | Unique | Increment | Contains ?                          |
+| -------------- | ---- | ------- | ------ | --------- | ----------------------------------- |
+| id             | int  | Y       | Y      | Y         | internal id of the char             |
+| apikey         | int  | N       | N      | N         | id of the linked apikey             |
+| charid         | int  | N       | Y      | N         | eve id of the character             |
+| skills         | text | N       | N      | N         | skills of the character (serialize) |
+| created        | int  | N       | N      | N         | created timestamp                   |
+| lastUpdate     | int  | N       | N      | N         | last update timestamp               |
