@@ -1,0 +1,17 @@
+{
+    "name": "panda_/demeter",
+    "require": {
+        "twig/twig": "~1.18.0",
+        "silex/silex": "~1.2",
+        "predis/predis": "~1.0",
+        "3rdpartyeve/phealng": "~2.1"
+    },
+    "license": "proprietary",
+    "description": "Demeter project is focused to the management of character and accounts and their Planetary Interaction in the MMORPG Eve Online.",
+    "authors": [
+        {
+            "name": "Baptiste Leduc",
+            "email": "panda@mumbox.org"
+        }
+    ]
+}

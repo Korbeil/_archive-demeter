@@ -1,0 +1,12 @@
+{
+    "name": "panda_/pi",
+    "require": {
+        "twig/twig": "~1.18.0"
+    },
+    "authors": [
+        {
+            "name": "Baptiste Leduc",
+            "email": "panda@mumbox.org"
+        }
+    ]
+}

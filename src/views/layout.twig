@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %} | Demeter</title>
+
+        <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/assets/css/font-awesome.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/assets/css/tablesaw.css" media="screen">
+        <link rel="stylesheet" type="text/css" href="/assets/css/selectize.css" media="screen">
+
+        {% block header %}
+        {% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/"><i class="fa fa-bomb"></i>&nbsp;Demeter</a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    {% if session.isLogged is defined and session.isLogged %}
+                        <ul class="nav navbar-nav">
+                            <li {% block home_class %}{% endblock %}><a href="/">Dashboard</a></li>
+                            <li {% block api_class %}{% endblock %}><a href="/api-keys">Api Keys</a></li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            {% if session.isEveSSO is not defined or (session.isEveSSO is defined and not session.isEveSSO) %}
+                            <li {% block account_class %}{% endblock %}><a href="/account">Account</a></li>
+                            {% endif %}
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    {% else %}
+                        <ul class="nav navbar-nav navbar-right">
+                            <li {% block login_class %}{% endblock %}><a href="/login">Login</a></li>
+                            <li {% block register_class %}{% endblock %}><a href="/register">Register</a></li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <br/><br/>
+
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <script>
+            {% block script %}
+            {% endblock %}
+        </script>
+
+        <script type="text/javascript" src="/assets/js/jquery.js"></script>
+        <script type="text/javascript" src="/assets/js/bootstrap.js"></script>
+        <script type="text/javascript" src="/assets/js/tablesaw.js"></script>
+        <script type="text/javascript" src="/assets/js/scripts.js"></script>
+    </body>
+</html>

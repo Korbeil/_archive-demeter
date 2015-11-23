@@ -1,0 +1,67 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Api Keys{% endblock %}
+
+{% block api_class %}class="active"{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 id="navbar">API Keys</h1>
+
+        <span class="pull-right" style="margin-top: -50px;">
+            <a class="btn btn-success" href="/api-keys/add">Add one</a>
+        </span>
+    </div>
+
+    <!-- Pending Keys -->
+    {% if apikeys.pending is not empty %}
+        <h3>Pending Api-Key</h3>
+        {% for apikey in apikeys.pending %}
+            {% if apikey.status == 'pending' %}
+                <div class="well container">
+                    <div class="row">
+                        <div class="col-md-2">
+                            {{ apikey.name }}
+                        </div>
+                        <div class="col-md-2 col-md-offset-8">
+                            <span style="float: right;">
+                                <a href="/api-keys/edit/{{ apikey.id }}" class="btn btn-primary">Edit</a>
+                                <a href="/api-keys/remove/{{ apikey.id }}" class="btn btn-danger">Remove</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- Ok Keys -->
+    {% if apikeys.ok is not empty %}
+        <h3>Api-Key in use</h3>
+        {% for apikey in apikeys.ok %}
+            {% if apikey.status == 'ok' %}
+                <div class="well container">
+                    <div class="row">
+                        <div class="col-md-2" {% if apikey.chars is not empty %}style="margin-top: 22px;"{% endif %}>
+                            {{ apikey.name }}
+                        </div>
+                        <div class="col-md-8">
+                            {% for char in apikey.chars %}
+                                <img src="https://image.eveonline.com/Character/{{ char.charid }}_64.jpg" />
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-2" {% if apikey.chars is not empty %}style="margin-top: 22px;"{% endif %}>
+                            <span style="float: right; margin-right: 10px;">
+                                <a href="/api-keys/edit/{{ apikey.id }}" class="btn btn-primary">Edit</a>
+                                <a href="/api-keys/remove/{{ apikey.id }}" class="btn btn-danger">Remove</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        NO OK<br/>
+    {% endif %}
+
+{% endblock %}

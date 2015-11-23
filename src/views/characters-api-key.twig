@@ -1,0 +1,68 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Add Api Key{% endblock %}
+
+{% block api_class %}class="active"{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 id="navbar">API Key - Character Selection</h1>
+    </div>
+
+    <form role="form" method="POST">
+        {% for character in characters %}
+            <div class="well container">
+                <div class="row">
+                    <div class="col-md-1" style="margin-top: 12px;">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="characters[]" value="{{ character.id }}" {% if character.active %}checked{% endif %}>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <img src="https://image.eveonline.com/Character/{{ character.generic.id }}_64.jpg" alt="{{ character.generic.name }}" />
+
+                        {% if character.generic.corp is defined %}
+                            <img src="https://image.eveonline.com/Corporation/{{ character.generic.corp.id }}_64.png" alt="{{ character.generic.corp.name }}" />
+                        {% endif %}
+
+                        {% if character.generic.alliance is defined %}
+                            <img src="https://image.eveonline.com/Alliance/{{ character.generic.alliance.id }}_64.png" alt="{{ character.generic.alliance.name }}" />
+                        {% endif %}
+                    </div>
+                    <div class="col-md-2" style="margin-top: 22px;">
+                        {{ character.generic.name }}
+                    </div>
+                    <div class="col-md-6">
+                        {% if character.skills is not empty %}
+                            <div class="container">
+                            {% for skill in character.skills %}
+
+                                <!-- setting the label class -->
+                                {% if skill.level >= 4 %}
+                                    {% set labelClass = 'label-success' %}
+                                {% else %}
+                                    {% set labelClass = 'label-warning' %}
+                                {% endif %}
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span class="label {{ labelClass }}">{{ skill.name }} (Level: {{ skill.level }})</span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            <div  style="margin-top: 22px;">
+                                <span class="label label-danger">No skills dedicated to Planetary Interaction detected.</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-default">Save</button>
+    </form>
+{% endblock %}

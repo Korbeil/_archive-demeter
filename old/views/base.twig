@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PI Management</title>
+
+    <link href="/tools/PI2/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+    <style>
+        .chart canvas {
+            top: 0px;
+            left: 0px;
+            position: absolute;
+        }
+        .chart:nth-child(2) canvas {
+            top: 70px;
+            left: 0px;
+            position: absolute;
+        }
+
+        .panel-heading a.collapsed:after {
+            content:"\e080";
+        }
+        .panel-heading a:after {
+            font-family:'Glyphicons Halflings';
+            content:"\e114";
+            float: right;
+            color: grey;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">{% block content %}{% endblock %}</div>
+
+    <script type="text/javascript" src="/tools/PI2/bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="/tools/PI2/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/tools/PI2/bower_components/highcharts/js/highcharts.js"></script>
+    {% block script %}{% endblock %}
+</body>
+</html>

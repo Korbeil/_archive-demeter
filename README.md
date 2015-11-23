@@ -19,3 +19,11 @@ What this overview can contain ?
 - Resume of Structures on the planet (how much of each structures)
 - Extractors, what they extract and time remaining until the end of the cycle
 - Launchpad/Storage and what they contains
+
+
+---
+
+Installation:
+1. `$ composer install`
+2. `$ bower install`
+3. `$ grunt`

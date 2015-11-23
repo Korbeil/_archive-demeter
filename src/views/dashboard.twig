@@ -1,0 +1,137 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block home_class %}class="active"{% endblock %}
+
+{% block header %}
+    <script type="text/javascript" src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['corechart']}]}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 id="navbar">Dashboard</h1>
+    </div>
+
+    <div class="container alert alert-{{ update.class }}">
+        {% if update.message == 'ok' %}
+            <div style="display: inline-block; margin-top: 7px;">
+                No update since{{ update.last }}let's do a new one ?
+            </div>
+            <a href="/character/update" class="btn btn-success pull-right">Sure, update !</a>
+        {% else %}
+            Already a request made in the last 10min, please wait until that's elapsed ;)
+        {% endif %}
+    </div>
+
+    {% for character in characters %}
+        <div class="well container">
+            <div class="row">
+                <div class="col-md-2">
+                    {{ character.informations.name }}
+                </div>
+                <div class="col-md-3">
+                    <i class="fa fa-globe"></i>&nbsp;
+                    {{ character.planets|length }}/{{ character.skills[2495].level + 1 }} planets
+                </div>
+                <div class="col-md-4">
+                    -
+                </div>
+                <div class="col-md-2 text-right">
+                    API: {{ apikeys[character.apikey] }}
+                </div>
+                <div class="col-md-1 text-right" style="font-size: 20px;">
+                    <a href="#character_{{ character.id }}" onclick="switchCollapsed(this);" data-toggle="collapse" aria-expanded="false" aria-controls="character_{{ character.id }}">
+                        <i class="fa fa-plus-square-o"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="collapse" id="character_{{ character.id }}">
+                <hr/>
+                {% for planet in character.planets %}
+                    <div class="row">
+                        {% set remainingDiv = 8 %}
+                        <div class="col-md-1">
+                            <div style="transform: rotate(-90deg);">
+                                {{ planet.name }}
+                            </div>
+                        </div>
+                        {% for extractor in planet.extractors %}
+                            <div class="col-md-2">
+                                <div id="character_pie_extractor_{{ character.id }}_{{ planet.id }}_{{ extractor.id }}" style="width: 160px; height: 160px;"></div>
+                            </div>
+
+                            {% set remainingDiv = remainingDiv - 2 %}
+                        {% endfor %}
+                        <div class="col-md-3">
+                            <div id="character_pie_launchpad_{{ character.id }}_{{ planet.id }}" style="width: 280px; height: 160px;"></div>
+                        </div>
+                        <div class="col-md-{{ remainingDiv }}">
+                            -----------------------------------------------------
+                            Launchpad #3
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block script %}
+    function switchCollapsed(el) {
+        var fontAwesome = $(el).find('.fa');
+        var hasClass    = fontAwesome.hasClass('fa-plus-square-o');
+        if(hasClass) {
+            fontAwesome.removeClass('fa-plus-square-o');
+            fontAwesome.addClass('fa-minus-square-o');
+        } else {
+            fontAwesome.removeClass('fa-minus-square-o');
+            fontAwesome.addClass('fa-plus-square-o');
+        }
+    }
+
+    google.setOnLoadCallback(drawCharts);
+    function drawCharts() {
+        {% for character in characters %}
+            {% for planet in character.planets %}
+                //
+                var data = google.visualization.arrayToDataTable([
+                    ['Label'    , '%'],
+                    ['Empty'  , {{ planet.launchpadRemaining }}],
+                    {% for item in planet.launchpad %}
+                        ['{{ item.name }}', {{ item.mass }}],
+                    {% endfor %}
+                ]);
+
+                var options = {
+                    title: 'Launchpad',
+                    pieSliceText: 'none',
+                    backgroundColor: { fill:'transparent' },
+                    width: 280,
+                    height: 160
+                };
+                var chart = new google.visualization.PieChart(document.getElementById('character_pie_launchpad_{{ character.id }}_{{ planet.id }}'));
+                chart.draw(data, options);
+
+                {% for extractor in planet.extractors %}
+
+                    var data = google.visualization.arrayToDataTable([
+                        ['Label'    , '%'],
+                        ['Elapsed'  , {{ extractor.elapsed }}],
+                        ['Remaining', {{ 100 - extractor.elapsed }}]
+                    ]);
+
+                    var options = {
+                        title: 'Extractor',
+                        legend: 'none',
+                        backgroundColor: { fill:'transparent' },
+                        width: 160,
+                        height: 160
+                    };
+                    var chart = new google.visualization.PieChart(document.getElementById('character_pie_extractor_{{ character.id }}_{{ planet.id }}_{{ extractor.id }}'));
+                    chart.draw(data, options);
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    }
+{% endblock %}
