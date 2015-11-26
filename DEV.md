@@ -17,6 +17,7 @@
 * [MySQL](http://php.net/manual/fr/book.pdo.php)
 * [Redis](http://redis.io/) (PHP Client: https://github.com/nrk/predis)
 * [phealng](https://github.com/3rdpartyeve/phealng) (Eve API PHP Client)
+* [gearman](http://gearman.org/)
 
 ### Client Side
 * [Bootstrap](http://getbootstrap.com/) (Check: http://jsfiddle.net/Tcgyx/15/ for tip to open/close panels)

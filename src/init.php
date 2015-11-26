@@ -46,3 +46,8 @@
             return $app->redirect('/login');
         }
     }, Silex\Application::EARLY_EVENT);
+
+    //////////////////////////////////////////////////////////
+    // init Pheal Config
+    \Pheal\Core\Config::getInstance()->cache = new \Pheal\Cache\RedisStorage();
+    \Pheal\Core\Config::getInstance()->access = new \Pheal\Access\StaticCheck();

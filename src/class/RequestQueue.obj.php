@@ -20,12 +20,15 @@
         );
 
         public static function add($userid, $charid) {
-            self::create(Array(
+            $data = Array(
                 'userid' => $userid,
                 'charid' => $charid,
                 'time'   => time(),
                 'status' => 'wait'
-            ));
+            );
+
+            $id = self::create($data);
+            return array_merge(Array('id' => $id), $data);
         }
 
         public static function checkForUser($userid) {

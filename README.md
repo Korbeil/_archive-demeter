@@ -22,6 +22,10 @@ What this overview can contain ?
 - Extractors, what they extract and time remaining until the end of the cycle
 - Launchpad/Storage and what they contains
 
+Issues:
+- [ ] Modify an API Key Label
+- [ ] Force Character update after a character creation
+- [ ] Add error handler in gearman process
 
 ---
 

@@ -33,8 +33,12 @@
     $app->get('/character/update', function() use ($app) {
         $chars = Character::getActivesForUser($_SESSION['user_id']);
 
+        $client = new GearmanClient();
+        $client->addServer('127.0.0.1', 4730);
+
         foreach($chars as $char) {
-            RequestQueue::add($_SESSION['user_id'], $char['id']);
+            $requestData = RequestQueue::add($_SESSION['user_id'], $char['id']);
+            $client->doBackground("update_character", json_encode($requestData ));
         }
 
         $userDetails    = User::get(Array('id' => $_SESSION['user_id']));

@@ -126,7 +126,11 @@
 
             $keys = array_keys($details);
             $sql = 'INSERT INTO `' .$dbConf['table']. '` (' .implode(', ', Utils::addPrefixToArray($dbConf['prefix'], $keys)). ') VALUES (' .implode(', ', Utils::addPrefixAndSufixToArray('\'', $details)). ');';
-            return Database::getInstance()->exec($sql);
+            if(Database::getInstance()->exec($sql)) {
+                return Database::getInstance()->lastInsertId();
+            }
+
+            return false;
         }
         // delete
         public function delete() {

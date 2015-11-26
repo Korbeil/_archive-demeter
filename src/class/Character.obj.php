@@ -56,15 +56,19 @@
                     $char['skills']         = unserialize($char['skills']);
                     $char['planets']        = unserialize($char['planets']);
 
-                    foreach($char['planets'] as $planetId => $planet) {
-                        foreach($planet['extractors'] as $extractorId => $extractor) {
-                            $elapsed = round((1 - ((time() - $extractor['expiry']) / ($extractor['install'] - $extractor['expiry']))) * 100, 0);
-                            if($elapsed > 100) {
-                                $elapsed = 100;
-                            }
+                    if(isset($char['planets']) && is_array($char['planets'])) {
+                        foreach($char['planets'] as $planetId => $planet) {
+                            foreach($planet['extractors'] as $extractorId => $extractor) {
+                                $elapsed = round((1 - ((time() - $extractor['expiry']) / ($extractor['install'] - $extractor['expiry']))) * 100, 0);
+                                if($elapsed > 100) {
+                                    $elapsed = 100;
+                                }
 
-                            $char['planets'][$planetId]['extractors'][$extractorId]['elapsed'] = $elapsed;
+                                $char['planets'][$planetId]['extractors'][$extractorId]['elapsed'] = $elapsed;
+                            }
                         }
+                    } else {
+                        $char['planets']    = Array();
                     }
                     $data[] = $char;
                 }
