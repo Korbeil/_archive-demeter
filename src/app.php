@@ -19,10 +19,6 @@
     //////////////////////////////////////////////////////////
     // dashboard
     $app->get('/', function() use($app) {
-        //echo '<pre>';
-        //print_r(Character::getActivesForUser($_SESSION['user_id']));
-        //echo '</pre>';
-
         return $app['twig']->render('dashboard.twig', Array(
             'update'        => User::isUpdateAvailable($_SESSION['user_id']),
             'characters'    => Character::getActivesForUser($_SESSION['user_id']),
@@ -31,18 +27,16 @@
     });
 
     $app->get('/character/update', function() use ($app) {
-        $chars = Character::getActivesForUser($_SESSION['user_id']);
-
-        $client = new GearmanClient();
-        $client->addServer('127.0.0.1', 4730);
+        $chars              = Character::getActivesForUser($_SESSION['user_id']);
+        $client             = RequestQueue::initGearman();
 
         foreach($chars as $char) {
-            $requestData = RequestQueue::add($_SESSION['user_id'], $char['id']);
-            $client->doBackground("update_character", json_encode($requestData ));
+            $requestData    = RequestQueue::add($_SESSION['user_id'], $char['id']);
+            RequestQueue::doBackground($client, $requestData);
         }
 
-        $userDetails    = User::get(Array('id' => $_SESSION['user_id']));
-        $userObj        = new User($userDetails);
+        $userDetails        = User::get(Array('id' => $_SESSION['user_id']));
+        $userObj            = new User($userDetails);
         $userObj->setDetail('lastRequestedUpdate', time());
         $userObj->update();
 

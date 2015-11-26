@@ -93,4 +93,18 @@
 
             return $data;
         }
+
+        /**
+         * Gearman stuff
+         */
+        public static function initGearman($host = '127.0.0.1', $port = 4730) {
+            $client = new GearmanClient();
+            $client->addServer('127.0.0.1', 4730);
+
+            return $client;
+        }
+
+        public static function doBackground($client, $data) {
+            $client->doBackground("update_character", json_encode($data));
+        }
     }
