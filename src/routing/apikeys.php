@@ -37,6 +37,19 @@
         ));
     });
 
+    $app->post('/api-keys', function() use ($app) {
+        $id         = $_POST['inputApiKey'];
+        $label      = $_POST['inputLabel'];
+
+        $details    = ApiKey::get(Array('id' => $id));
+        $apiKeyObj  = new ApiKey($details);
+
+        $apiKeyObj->setDetail('name', $label);
+        $apiKeyObj->update();
+
+        return $app->redirect('/api-keys');
+    });
+
     ////////////////////
     // create
     $app->get('/api-keys/add', function() use ($app) {
@@ -59,9 +72,22 @@
     ////////////////////
     // update
     $app->get('/api-keys/edit/{id}', function($id) use ($app) {
+        $apikeys    = ApiKey::getAllForUser($_SESSION['user_id']);
+        $exists     = false;
+        foreach($apikeys as $apikey) {
+            if($apikey['id'] == $id) {
+                $exists = true;
+            }
+        }
+        if(!$exists) {
+            return $app->redirect('/api-keys');
+        }
+
         $details    = ApiKey::get(Array('id' => $id));
         $apikey     = new ApiKey($details);
 
+
+        $client     = RequestQueue::initGearman();
         $pheal      = new Pheal\Pheal($apikey->getDetail('keyId'), $apikey->getDetail('vCode'));
         $response   = $pheal->Characters();
         $characters = Array();
@@ -90,6 +116,10 @@
 
                 $characterId        = Database::getInstance()->lastInsertId();
                 $characterActive    = false;
+
+                // force update character after character creation
+                $requestData        = RequestQueue::add($_SESSION['user_id'], $characterId);
+                RequestQueue::doBackground($client, $requestData);
             } else {
                 // already exists in database, let's just load it and update datas
                 $details            = Character::get(Array('id' => $check['id']));
