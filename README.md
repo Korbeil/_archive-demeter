@@ -23,8 +23,8 @@ What this overview can contain ?
 - Launchpad/Storage and what they contains
 
 Issues:
-- [ ] Modify an API Key Label
-- [ ] Force Character update after a character creation
+- [x] Modify an API Key Label
+- [x] Force Character update after a character creation
 - [ ] Add error handler in gearman process
 
 ---

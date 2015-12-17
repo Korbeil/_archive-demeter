@@ -45,13 +45,14 @@
                         <div class="col-md-2" {% if apikey.chars is not empty %}style="margin-top: 22px;"{% endif %}>
                             {{ apikey.name }}
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                             {% for char in apikey.chars %}
                                 <img src="https://image.eveonline.com/Character/{{ char.charid }}_64.jpg" />
                             {% endfor %}
                         </div>
-                        <div class="col-md-2" {% if apikey.chars is not empty %}style="margin-top: 22px;"{% endif %}>
+                        <div class="col-md-4" {% if apikey.chars is not empty %}style="margin-top: 22px;"{% endif %}>
                             <span style="float: right; margin-right: 10px;">
+                                <a href="javascript:;" data-toggle="modal" data-target="#changeLabel_{{ apikey.id }}" class="btn btn-primary">Change Label</a>
                                 <a href="/api-keys/edit/{{ apikey.id }}" class="btn btn-primary">Edit</a>
                                 <a href="/api-keys/remove/{{ apikey.id }}" class="btn btn-danger">Remove</a>
                             </span>
@@ -63,5 +64,34 @@
     {% else %}
         NO OK<br/>
     {% endif %}
+
+    {% for apikey in apikeys.ok %}
+        <div class="modal fade" id="changeLabel_{{ apikey.id }}" tabindex="-1" role="dialog" aria-labelledby="changeLabel_{{ apikey.id }}Label">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form id="changeLabel_{{ apikey.id }}Form" class="form-horizontal" method="POST">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="changeLabel_{{ apikey.id }}Label">Change label</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="inputApiKey" value="{{ apikey.id }}" />
+
+                            <div class="form-group">
+                                <label for="inputLabel" class="col-sm-2 control-label">Label</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="inputLabel" name="inputLabel" value="{{ apikey.name }}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" name="buttonSubmit" onclick="$('#changeLabel_{{ apikey.id }}Form').submit();">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 
 {% endblock %}

@@ -56,19 +56,17 @@
                                 {{ planet.name }}
                             </div>
                         </div>
-                        {% for extractor in planet.extractors %}
-                            <div class="col-md-2">
-                                <div id="character_pie_extractor_{{ character.id }}_{{ planet.id }}_{{ extractor.id }}" style="width: 160px; height: 160px;"></div>
-                            </div>
-
-                            {% set remainingDiv = remainingDiv - 2 %}
-                        {% endfor %}
                         <div class="col-md-3">
-                            <div id="character_pie_launchpad_{{ character.id }}_{{ planet.id }}" style="width: 280px; height: 160px;"></div>
+                            {% for extractor in planet.extractors %}
+                                    <div id="character_pie_extractor_{{ character.id }}_{{ planet.id }}_{{ extractor.id }}" style="width: 100px; height: 100px; display: inline-block;"></div>
+                            {% endfor %}
+                            {% set remainingDiv = remainingDiv - 3 %}
+                        </div>
+                        <div class="col-md-3">
+                            <div id="character_pie_launchpad_{{ character.id }}_{{ planet.id }}" style="width: 280px; height: 100px;"></div>
                         </div>
                         <div class="col-md-{{ remainingDiv }}">
-                            -----------------------------------------------------
-                            Launchpad #3
+                            <!-- Empty shit -->
                         </div>
                     </div>
                 {% endfor %}
@@ -94,7 +92,6 @@
     function drawCharts() {
         {% for character in characters %}
             {% for planet in character.planets %}
-                //
                 var data = google.visualization.arrayToDataTable([
                     ['Label'    , '%'],
                     ['Empty'  , {{ planet.launchpadRemaining }}],
@@ -108,7 +105,7 @@
                     pieSliceText: 'none',
                     backgroundColor: { fill:'transparent' },
                     width: 280,
-                    height: 160
+                    height: 100
                 };
                 var chart = new google.visualization.PieChart(document.getElementById('character_pie_launchpad_{{ character.id }}_{{ planet.id }}'));
                 chart.draw(data, options);
@@ -125,8 +122,8 @@
                         title: 'Extractor',
                         legend: 'none',
                         backgroundColor: { fill:'transparent' },
-                        width: 160,
-                        height: 160
+                        width: 100,
+                        height: 100
                     };
                     var chart = new google.visualization.PieChart(document.getElementById('character_pie_extractor_{{ character.id }}_{{ planet.id }}_{{ extractor.id }}'));
                     chart.draw(data, options);

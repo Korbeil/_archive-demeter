@@ -13,7 +13,8 @@
     $app->register(new Silex\Provider\TwigServiceProvider(), Array(
         'twig.path'     => __DIR__.'/views/',
         'twig.options'  => Array(
-            'debug'     => true
+            'debug'     => true,
+            'cache'     => false
         )
     ));
     $app['twig']->addGlobal('session', $_SESSION);

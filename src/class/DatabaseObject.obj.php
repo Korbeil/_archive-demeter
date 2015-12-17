@@ -172,13 +172,27 @@
         public static function get($details) {
             $dbConf = static::getDbConf();
 
-            $sql = 'SELECT * FROM `' .$dbConf['table']. '` WHERE ' .self::makeWhere($details, $dbConf);
-            $data = Database::getInstance()->query($sql)->fetch();
+            $sql    = 'SELECT * FROM `' .$dbConf['table']. '` WHERE ' .self::makeWhere($details, $dbConf);
+            $res    = Database::getInstance()->query($sql);
 
-            if($dbConf['prefix'] != '') {
-                return Utils::removePrefixToArrayKeys($dbConf['prefix'], $data);
+            if($res instanceof PDOStatement) {
+                $data   = $res->fetch();
+
+                if($dbConf['prefix'] != '') {
+                    return Utils::removePrefixToArrayKeys($dbConf['prefix'], $data);
+                } else {
+                    return $data;
+                }
             } else {
-                return $data;
+                // error
+                var_dump('--------------------------------');
+                var_dump('ERROR: ');
+                var_dump($sql);
+                var_dump('stacktrace: ');
+                debug_print_backtrace();
+                var_dump('--------------------------------');
+
+                return Array();
             }
         }
         // get

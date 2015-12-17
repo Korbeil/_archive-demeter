@@ -23,8 +23,12 @@
 
         public static function getInstance () {
             if (!(self::$_instance instanceof self))
-                self::$_instance = new self();
+                self::reset();
 
             return self::$_instance;
+        }
+
+        public static function reset() {
+            self::$_instance = new self();
         }
     }
