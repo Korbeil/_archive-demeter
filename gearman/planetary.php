@@ -7,11 +7,12 @@
  */
 
     // init
-    require_once __DIR__. '/../vendor/autoload.php';
-    require_once __DIR__. '/../src/require.php';
+    $loader = require_once __DIR__. '/../vendor/autoload.php';
+    $loader->add('Demeter', __DIR__.'/../src/');
 
     // load config
-    require_once __DIR__. '/../config.php';
+    $app    = new \Demeter\Core\Application();
+    $app->config();
 
     $worker = new GearmanWorker();
     $worker->addServer('127.0.0.1', 4730);
@@ -25,13 +26,13 @@
      */
     $worker->addFunction("update_character", function(GearmanJob $job) {
         $workload       = json_decode($job->workload(), true);
-        $requestObj     = new RequestQueue($workload);
+        $requestObj     = new \Demeter\Model\RequestQueue($workload);
 
-        $charDetails    = Character::get(Array('id' => $workload['charid']));
-        $charObj        = new Character($charDetails);
+        $charDetails    = \Demeter\Model\Character::get(Array('id' => $workload['charid']));
+        $charObj        = new \Demeter\Model\Character($charDetails);
 
-        $apiKeyDetails  = ApiKey::get(Array('id' => $charObj->getDetail('apikey')));
-        $apiKeyObj      = new ApiKey($apiKeyDetails);
+        $apiKeyDetails  = \Demeter\Model\ApiKey::get(Array('id' => $charObj->getDetail('apikey')));
+        $apiKeyObj      = new \Demeter\Model\ApiKey($apiKeyDetails);
 
         $pheal          = new Pheal\Pheal($apiKeyObj->getDetail('keyId'), $apiKeyObj->getDetail('vCode'), 'char');
         $phealColonies  = $pheal->PlanetaryColonies(Array("characterID" => $charDetails['charid']));
@@ -86,7 +87,7 @@
                     }
 
                     $contentTypeID  = (string) $pin->contentTypeID;
-                    $item           = EveItem::get(Array('typeID' => $contentTypeID));
+                    $item           = \Demeter\Model\EveItem::get(Array('typeID' => $contentTypeID));
 
                     $itemTotalMass  = $pin->contentQuantity * $item['volume'];
 
@@ -129,7 +130,7 @@
         $requestObj->update();
 
         // remove database connection
-        Database::getInstance()->destroy();
+        \Demeter\Core\Database::getInstance()->destroy();
     });
 
     while ($worker->work());

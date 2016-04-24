@@ -6,7 +6,9 @@
  * Time: 19:36
  */
 
-    class RequestQueue extends DatabaseObject {
+    namespace Demeter\Model;
+
+    class RequestQueue extends \Demeter\Core\DatabaseObject {
         static protected $_DB_CONFIG = Array(
             'table'     => "requestQueue",
             'prefix'    => "rq_"
@@ -60,10 +62,10 @@
                                     )
                                 )
                             ";
-            $res        = Database::getInstance()->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+            $res        = \Demeter\Core\Database::getInstance()->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
             $data       = Array();
             foreach($res as $row) {
-                $data[] = Utils::removePrefixToArrayKeys(self::$_DB_CONFIG['prefix'], $row);
+                $data[] = \Demeter\Utils\Utils::removePrefixToArrayKeys(self::$_DB_CONFIG['prefix'], $row);
             }
 
             return $data;
@@ -76,10 +78,10 @@
                     ORDER BY `" .self::$_DB_CONFIG['prefix']. "time`
                     LIMIT 0, " .$nbChars;
 
-            $res        = Database::getInstance()->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+            $res        = \Demeter\Core\Database::getInstance()->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
             $data       = Array();
             foreach($res as $row) {
-                $current    = Utils::removePrefixToArrayKeys(self::$_DB_CONFIG['prefix'], $row);
+                $current    = \Demeter\Utils\Utils::removePrefixToArrayKeys(self::$_DB_CONFIG['prefix'], $row);
                 $data[]     = $current;
 
                 // set status to `inprogress`
@@ -98,8 +100,8 @@
          * Gearman stuff
          */
         public static function initGearman($host = '127.0.0.1', $port = 4730) {
-            $client = new GearmanClient();
-            $client->addServer('127.0.0.1', 4730);
+            $client = new \GearmanClient();
+            $client->addServer($host, $port);
 
             return $client;
         }

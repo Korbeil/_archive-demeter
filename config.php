@@ -7,14 +7,14 @@
  */
 
     // Database conf
-    GlobalVars::getInstance()->set('database', array(
+    \Demeter\Utils\GlobalVars::getInstance()->set('database', array(
         'dsn'   => 'mysql:dbname=demeter;host=localhost',
         'user'  => 'demeter',
         'pass'  => 'cw824jHM'
     ));
 
     // Eve-SSO
-    GlobalVars::getInstance()->set('eve-sso', array(
+    \Demeter\Utils\GlobalVars::getInstance()->set('eve-sso', array(
         'base_url'      => 'https://login.eveonline.com',
         'auth_url'      => '/oauth/authorize',
         'token_url'     => '/oauth/token',

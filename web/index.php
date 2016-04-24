@@ -8,8 +8,7 @@
     session_start();
 
     $loader = require_once __DIR__. '/../vendor/autoload.php';
-    $app    = new Silex\Application();
+    $loader->add('Demeter', __DIR__.'/../src/');
 
-    require_once __DIR__. '/../src/app.php';
-
-    $app->run();
+    $app    = new Demeter\Core\Application();
+    $app->routine();

@@ -2,9 +2,11 @@
 /**
  * Created by PhpStorm.
  * User: baptisteleduc
- * Date: 09/05/15
- * Time: 01:47
+ * Date: 24/04/16
+ * Time: 17:18
  */
+
+    namespace Demeter\Utils;
 
     class Utils {
 
@@ -48,7 +50,7 @@
         //////////////////////////////////////////////////////////
         // eve utils
         public static function buildEveLoginURL() {
-            $params = GlobalVars::getInstance()->get('eve-sso');
+            $params = \Demeter\Utils\GlobalVars::getInstance()->get('eve-sso');
             $base   = $params['base_url'] . $params['auth_url'];
 
             $array  = Array(

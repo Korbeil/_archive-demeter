@@ -6,6 +6,8 @@
  * Time: 01:38
  */
 
+    namespace Demeter\Core;
+
     class DatabaseObject {
 
         protected $id;
@@ -40,7 +42,7 @@
 
             if($withPrefix) {
                 $dbConf = self::getDbConf();
-                return Utils::addPrefixToArray($dbConf['prefix'], $fields);
+                return \Demeter\Utils\Utils::addPrefixToArray($dbConf['prefix'], $fields);
             }
             return $fields;
         }
@@ -124,10 +126,10 @@
         public static function create($details) {
             $dbConf = static::getDbConf();
 
-            $keys = array_keys($details);
-            $sql = 'INSERT INTO `' .$dbConf['table']. '` (' .implode(', ', Utils::addPrefixToArray($dbConf['prefix'], $keys)). ') VALUES (' .implode(', ', Utils::addPrefixAndSufixToArray('\'', $details)). ');';
-            if(Database::getInstance()->exec($sql)) {
-                return Database::getInstance()->lastInsertId();
+            $keys   = array_keys($details);
+            $sql    = 'INSERT INTO `' .$dbConf['table']. '` (' .implode(', ', \Demeter\Utils\Utils::addPrefixToArray($dbConf['prefix'], $keys)). ') VALUES (' .implode(', ', \Demeter\Utils\Utils::addPrefixAndSufixToArray('\'', $details)). ');';
+            if(\Demeter\Core\Database::getInstance()->exec($sql)) {
+                return \Demeter\Core\Database::getInstance()->lastInsertId();
             }
 
             return false;
@@ -142,7 +144,7 @@
             $dbConf = static::getDbConf();
 
             $sql = 'DELETE FROM `' .$dbConf['table']. '` WHERE ' .self::makeWhere(array('id' => $this->getId()), $dbConf);
-            return Database::getInstance()->exec($sql);
+            return \Demeter\Core\Database::getInstance()->exec($sql);
         }
         // update
         public function update() {
@@ -154,14 +156,14 @@
             $dbConf = static::getDbConf();
 
             $sql = 'UPDATE `' .$dbConf['table']. '` SET ' .$this->makeUpdate(). ' WHERE ' .$dbConf['prefix']. 'id = \'' .$this->getId(). '\'';
-            return Database::getInstance()->exec($sql);
+            return \Demeter\Core\Database::getInstance()->exec($sql);
         }
         // exists
         public static function exists($details) {
             $dbConf = static::getDbConf();
 
             $sql = 'SELECT ' .$dbConf['prefix']. 'id as id FROM `' .$dbConf['table']. '` WHERE ' .self::makeWhere($details, $dbConf);
-            $stm = Database::getInstance()->query($sql);
+            $stm = \Demeter\Core\Database::getInstance()->query($sql);
 
             if($stm) {
                 return $stm->fetch();
@@ -173,20 +175,21 @@
             $dbConf = static::getDbConf();
 
             $sql    = 'SELECT * FROM `' .$dbConf['table']. '` WHERE ' .self::makeWhere($details, $dbConf);
-            $res    = Database::getInstance()->query($sql);
+            $res    = \Demeter\Core\Database::getInstance()->query($sql);
 
-            if($res instanceof PDOStatement) {
+            if($res instanceof \PDOStatement) {
                 $data   = $res->fetch();
 
                 if($dbConf['prefix'] != '') {
-                    return Utils::removePrefixToArrayKeys($dbConf['prefix'], $data);
+                    return \Demeter\Utils\Utils::removePrefixToArrayKeys($dbConf['prefix'], $data);
                 } else {
                     return $data;
                 }
             } else {
                 // error
+                echo '<pre>';
                 var_dump('--------------------------------');
-                var_dump('ERROR: ');
+                var_dump('ERROR: ' .print_r(\Demeter\Core\Database::getInstance()->errorInfo(), true));
                 var_dump($sql);
                 var_dump('stacktrace: ');
                 debug_print_backtrace();
@@ -200,11 +203,11 @@
             $dbConf     = static::getDbConf();
 
             $sql        = 'SELECT * FROM `' .$dbConf['table']. '` WHERE ' .self::makeWhere($details, $dbConf);
-            $data       = Database::getInstance()->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+            $data       = \Demeter\Core\Database::getInstance()->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
 
             $toReturn   = Array();
             foreach($data as $row) {
-                $toReturn[] = Utils::removePrefixToArrayKeys($dbConf['prefix'], $row);
+                $toReturn[] = \Demeter\Utils\Utils::removePrefixToArrayKeys($dbConf['prefix'], $row);
             }
             return $toReturn;
         }

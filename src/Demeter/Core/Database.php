@@ -3,18 +3,19 @@
  * Created by PhpStorm.
  * User: baptisteleduc
  * Date: 09/05/15
- * Time: 02:02
+ * Time: 01:41
  */
 
-    class GlobalVars {
+    namespace Demeter\Core;
 
-        public $_details;
+    class Database extends \PDO {
 
         // singleton
         private static $_instance;
 
         public function __construct() {
-            $this->_details = array();
+            $database = \Demeter\Utils\GlobalVars::getInstance()->get('database');
+            parent::__construct($database['dsn'], $database['user'], $database['pass']);
         }
 
         private function __clone () {
@@ -23,18 +24,16 @@
 
         public static function getInstance () {
             if (!(self::$_instance instanceof self))
-                self::$_instance = new self();
+                self::reset();
 
             return self::$_instance;
         }
 
-        public function exists($name) {
-            return isset($this->_details[$name]);
+        public static function destroy() {
+            self::$_instance = null;
         }
-        public function get($name) {
-            return ((isset($this->_details[$name])) ? $this->_details[$name] : '');
-        }
-        public function set($name, $value) {
-            $this->_details[$name] = $value;
+
+        public static function reset() {
+            self::$_instance = new self();
         }
     }

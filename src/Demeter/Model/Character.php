@@ -6,7 +6,9 @@
  * Time: 12:41
  */
 
-    class Character extends DatabaseObject {
+    namespace Demeter\Model;
+
+    class Character extends \Demeter\Core\DatabaseObject {
 
         static protected $_DB_CONFIG = Array(
             'table'     => "character",
@@ -41,7 +43,7 @@
         }
 
         static public function getActivesForUser($userid) {
-            $apiKeys    = ApiKey::getAllForUser($userid);
+            $apiKeys    = \Demeter\Model\ApiKey::getAllForUser($userid);
             $chars      = Array();
 
             foreach($apiKeys as $apiKey) {

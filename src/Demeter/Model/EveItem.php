@@ -26,7 +26,9 @@ CREATE TABLE `invTypes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
  */
 
-    class EveItem extends DatabaseObject {
+    namespace Demeter\Model;
+
+    class EveItem extends \Demeter\Core\DatabaseObject {
         static protected $_DB_CONFIG = array(
             'table'     => "invTypes",
             'prefix'    => ""

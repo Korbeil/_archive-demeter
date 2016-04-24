@@ -6,8 +6,9 @@
  * Time: 01:38
  */
 
+    namespace Demeter\Model;
 
-    class User extends DatabaseObject {
+    class User extends \Demeter\Core\DatabaseObject {
 
         static protected $_DB_CONFIG = array(
             'table'     => "user",
@@ -43,7 +44,7 @@
                     'created'           => time(),
                     'lastConnection'    => time()
                 ));
-                $user_id = Database::getInstance()->lastInsertId();
+                $user_id = \Demeter\Core\Database::getInstance()->lastInsertId();
 
                 return $user_id;
             } else {
@@ -82,11 +83,11 @@
             $errMsg     = curl_error($ch);
 
             if ($err != 0) {
-                throw new EveSSOException($errMsg, $err);
+                throw new \Demeter\Exception\EveSSOException($errMsg, $err);
             }
             if (!in_array($info['http_code'], array(200, 302))) {
                 $errMsg = 'HTTP response not OK: ' . (int)$info['http_code'] . '. Response body: ' . $resBody;
-                throw new EveSSOException($errMsg, $info['http_code']);
+                throw new \Demeter\Exception\EveSSOException($errMsg, $info['http_code']);
             }
 
             curl_close($ch);
@@ -94,7 +95,7 @@
             return $response;
         }
         public static function processAuthCode() {
-            $params             = GlobalVars::getInstance()->get('eve-sso');
+            $params             = \Demeter\Utils\GlobalVars::getInstance()->get('eve-sso');
             $header             = 'Authorization: Basic ' . base64_encode($params['client_id'] . ':' . $params['secret_key']);
             $url                = $params['base_url'] . $params['token_url'];
 
@@ -107,7 +108,7 @@
             return self::processCREST($url, Array($header), $fields);
         }
         public static function getCharacterId($response) {
-            $params             = GlobalVars::getInstance()->get('eve-sso');
+            $params             = \Demeter\Utils\GlobalVars::getInstance()->get('eve-sso');
             $header             = 'Authorization: ' .$response['token_type']. ' ' .$response['access_token'];
             $url                = $params['base_url'] . $params['verify_url'];
 
@@ -138,7 +139,7 @@
                 'created'           => time(),
                 'lastConnection'    => time()
             ));
-            $user_id = Database::getInstance()->lastInsertId();
+            $user_id = \Demeter\Core\Database::getInstance()->lastInsertId();
 
             return Array(
                 'done'  => true,
@@ -171,10 +172,10 @@
         //////////////////////////////////////////////////////////
         // login & register utils
         public static function loginAndRegisterRoutine($app, $type, $array) {
-            $response = User::$type($array);
+            $response = \Demeter\Model\User::$type($array);
 
             if(!$response['done']) {
-                $notification = new Notification($response['error']);
+                $notification = new \Demeter\Notification\Notification($response['error']);
                 GlobalVars::getInstance()->get('notifications')->add($notification);
 
                 return $app->redirect('/' .$type);
@@ -243,7 +244,7 @@
         public static function isUpdateAvailable($user_id) {
             $userDetails    = self::get(Array('id' => $user_id));
             $userObj        = new self($userDetails);
-            $requestQueue   = RequestQueue::checkForUserInTime($user_id);
+            $requestQueue   = \Demeter\Model\RequestQueue::checkForUserInTime($user_id);
 
             if(empty($requestQueue)) {
                 // nothing in queue, okay, let's go ;)

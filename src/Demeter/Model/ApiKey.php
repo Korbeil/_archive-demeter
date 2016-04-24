@@ -6,8 +6,9 @@
  * Time: 01:39
  */
 
+    namespace Demeter\Model;
 
-    class ApiKey extends DatabaseObject {
+    class ApiKey extends \Demeter\Core\DatabaseObject {
 
         static protected $_DB_CONFIG = Array(
             'table'     => "apikey",
@@ -30,7 +31,7 @@
         static public function createdPendingOne($details) {
             $details    = array_merge($details, Array('status' => 'pending'));
             $response   = self::create($details);
-            return Database::getInstance()->lastInsertId();
+            return \Demeter\Core\Database::getInstance()->lastInsertId();
         }
 
         static public function getAllForUser($userid) {
@@ -77,11 +78,11 @@
             $skills         = Array();
             foreach($characterSheet->skills as $learnedSkill) {
                 $skillID    = (int) $learnedSkill->typeID;
-                if(in_array($skillID, array_keys(Character::$_SKILLS))) {
+                if(in_array($skillID, array_keys(\Demeter\Model\Character::$_SKILLS))) {
                     $skills[$skillID]   = Array(
                         'id'    => $skillID,
                         'level' => $learnedSkill->level,
-                        'name'  => Character::$_SKILLS[$skillID]
+                        'name'  => \Demeter\Model\Character::$_SKILLS[$skillID]
                     );
                 }
             }
