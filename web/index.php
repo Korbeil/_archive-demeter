@@ -7,9 +7,8 @@
  */
     session_start();
 
-    require_once __DIR__. '/../vendor/autoload.php';
-
-    $app = new Silex\Application();
+    $loader = require_once __DIR__. '/../vendor/autoload.php';
+    $app    = new Silex\Application();
 
     require_once __DIR__. '/../src/app.php';
 

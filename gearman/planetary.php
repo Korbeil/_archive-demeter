@@ -127,6 +127,9 @@
         // and update the queue with a new 'done' status :)
         $requestObj->setDetail('status', 'done');
         $requestObj->update();
+
+        // remove database connection
+        Database::getInstance()->destroy();
     });
 
     while ($worker->work());

@@ -28,6 +28,10 @@
             return self::$_instance;
         }
 
+        public static function destroy() {
+            self::$_instance = null;
+        }
+
         public static function reset() {
             self::$_instance = new self();
         }
