@@ -36,11 +36,12 @@
 
             foreach($phealColonies->colonies as $planetary) {
                 $planetID   = (string) $planetary['planetID'];
-                $planetName = (string) $planetary['planetTypeName'];
+                $planetName = (string) $planetary['planetName'];
+                $planetType = (string) $planetary['planetTypeName'];
 
                 $coloniesData[$planetID]    = Array(
                     'id'                    => $planetID,
-                    'name'                  => $planetName,
+                    'name'                  => $planetType. ' - ' .$planetName,
                     'extractors'            => Array(),
                     'launchpad'             => Array(),
                     'launchpadRemaining'    => 10000,
@@ -119,6 +120,7 @@
             $charObj->setDetail('hasRequested', 'N');
             $charObj->setDetail('planets', serialize($coloniesData));
             $charObj->update();
+
             echo 'Character: `' .$charObj->getId(). '` updated !'."\n";
 
             // and update the queue with a new 'done' status :)

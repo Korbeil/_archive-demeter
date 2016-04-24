@@ -12,6 +12,11 @@
 
         public static function route(\Silex\Application $app) {
             $app->get('/', function() use($app) {
+
+//                echo '<pre>';
+//                print_r(\Demeter\Model\Character::getActivesForUser($_SESSION['user_id']));
+//                exit;
+
                 return $app['twig']->render('dashboard.twig', Array(
                     'update'        => \Demeter\Model\User::isUpdateAvailable($_SESSION['user_id']),
                     'characters'    => \Demeter\Model\Character::getActivesForUser($_SESSION['user_id']),

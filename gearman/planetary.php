@@ -41,7 +41,7 @@
 
         foreach($phealColonies->colonies as $planetary) {
             $planetID   = (string) $planetary['planetID'];
-            $planetName = (string) $planetary['planetTypeName'];
+            $planetName = (string) $planetary['planetName'];
 
             $coloniesData[$planetID]    = Array(
                 'id'                    => $planetID,
