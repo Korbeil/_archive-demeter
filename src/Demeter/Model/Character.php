@@ -71,7 +71,11 @@
                                 $char['planets'][$planetId]['extractors'][$extractorId]['elapsed']  = $elapsed;
                             }
 
-                            $char['planets'][$planetId]['elapsed'] = array_sum($elapsedArray) / count($elapsedArray);
+                            if(count($elapsedArray) > 0) {
+                                $char['planets'][$planetId]['elapsed'] = array_sum($elapsedArray) / count($elapsedArray);
+                            } else {
+                                $char['planets'][$planetId]['elapsed'] = 100;
+                            }
                         }
                     } else {
                         $char['planets']    = Array();

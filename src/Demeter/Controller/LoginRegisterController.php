@@ -12,7 +12,13 @@
 
         public static function route(\Silex\Application $app) {
             $app->get('/login', function() use ($app) {
-                $eveLoginUrl = \Demeter\Utils\Utils::buildEveLoginURL();
+                $params     = \Demeter\Utils\GlobalVars::getInstance()->get('eve-sso');
+                $provider   = new \Killmails\OAuth2\Client\Provider\EveOnline([
+                    'clientId'          => $params['client_id'],
+                    'clientSecret'      => $params['secret_key'],
+                    'redirectUri'       => $params['callback']
+                ]);
+                $eveLoginUrl = $provider->getAuthorizationUrl();
 
                 return $app['twig']->render('login.twig', Array(
                     'evesso'   => $eveLoginUrl
@@ -30,13 +36,29 @@
             });
             // callback for eve-sso login/register
             $app->get('/eve-sso', function() use ($app) {
-                $user_id    = \Demeter\Model\User::processEveSSO();
+                if($_SESSION['isLogged']) {
+                    $result = \Demeter\Controller\CrestCharacterController::routeSSO();
+                    return $app->redirect('/characters');
+                } else {
+                    $params     = \Demeter\Utils\GlobalVars::getInstance()->get('eve-sso');
+                    $provider   = new \Killmails\OAuth2\Client\Provider\EveOnline([
+                        'clientId'          => $params['client_id'],
+                        'clientSecret'      => $params['secret_key'],
+                        'redirectUri'       => $params['callback']
+                    ]);
+                    $token      = $provider->getAccessToken('authorization_code', [
+                        'code' => $_GET['code']
+                    ]);
+                    $user       = $provider->getResourceOwner($token);
+                    $user_id    = \Demeter\Model\User::matchUserWithCharacter($user->getId());
 
-                $_SESSION['user_id']    = $user_id;
-                $_SESSION['isLogged']   = true;
-                $_SESSION['isEveSSO']   = true;
+                    $_SESSION['user_id']    = $user_id;
+                    $_SESSION['isLogged']   = true;
+                    $_SESSION['isEveSSO']   = true;
 
-                return $app->redirect('/');
+                    return $app->redirect('/');
+                }
+
             });
 
             // logout

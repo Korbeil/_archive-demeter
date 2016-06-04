@@ -13,19 +13,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`usr_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
--- apikey
-DROP TABLE IF EXISTS `apikey`;
-CREATE TABLE IF NOT EXISTS `apikey` (
-  `apk_id` int(64) NOT NULL AUTO_INCREMENT,
-  `apk_user` int(64) NOT NULL,
-  `apk_name` TEXT NOT NULL,
-  `apk_keyId` TEXT NOT NULL,
-  `apk_vCode` TEXT NOT NULL,
-  `apk_status` ENUM('pending', 'ok') NOT NULL DEFAULT 'pending',
-
-  PRIMARY KEY (`apk_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
 -- character
 DROP TABLE IF EXISTS `character`;
 CREATE TABLE IF NOT EXISTS `character` (
@@ -54,5 +41,17 @@ CREATE TABLE IF NOT EXISTS `requestQueue` (
   `rq_status` enum('wait', 'inprogress', 'done') DEFAULT 'wait',
 
   PRIMARY KEY (`rq_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+-- crestCharacter
+DROP TABLE IF EXISTS `crestCharacter`;
+CREATE TABLE `crestCharacter` (
+  `cc_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cc_user` int(11) NOT NULL,
+  `cc_characterId` int(11) NOT NULL,
+  `cc_characterName` text NOT NULL,
+  `cc_accessToken` text NOT NULL,
+  `cc_status` ENUM('ok','failed','deleted') NOT NULL DEFAULT 'ok',
+  PRIMARY KEY (`cc_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 

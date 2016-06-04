@@ -79,6 +79,7 @@
                 'Account',
                 'ApiKeys',
                 'Character',
+                'CrestCharacter',
                 'Dashboard',
                 'Error',
                 'LoginRegister'

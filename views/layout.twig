@@ -28,6 +28,7 @@
                         <ul class="nav navbar-nav">
                             <li {% block home_class %}{% endblock %}><a href="/">Dashboard</a></li>
                             <li {% block api_class %}{% endblock %}><a href="/api-keys">Api Keys</a></li>
+                            <li {% block crest_class %}{% endblock %}><a href="/characters">Characters</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             {% if session.isEveSSO is not defined or (session.isEveSSO is defined and not session.isEveSSO) %}

@@ -111,7 +111,7 @@
                         $data           = \Demeter\Model\ApiKey::collectData($character, $pheal);
 
                         //////////
-                        Character::create(array_merge($db_create, Array(
+                        \Demeter\Model\Character::create(array_merge($db_create, Array(
                             'isActive'      => 'N',
                             'informations'  => serialize($data['generic']),
                             'skills'        => serialize($data['skills']),

@@ -27,19 +27,16 @@
 
         //////////////////////////////////////////////////////////
         // EvE-SSO
-        public static function processEveSSO() {
-            $response   = self::processAuthCode();
-            $character  = self::getCharacterId($response);
-
+        public static function matchUserWithCharacter($character_id) {
             $exists     = self::exists(Array(
                 'type'          => 'eveo',
-                'identifier'    => $character['CharacterID']
+                'identifier'    => $character_id
             ));
 
             if(!$exists) {
                 self::create(Array(
                     'type'              => 'eveo',
-                    'identifier'        => $character['CharacterID'],
+                    'identifier'        => $character_id,
                     'password'          => '',
                     'created'           => time(),
                     'lastConnection'    => time()

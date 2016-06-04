@@ -1,0 +1,35 @@
+{% extends 'layout.twig' %}
+
+{% block title %}Characters{% endblock %}
+
+{% block api_crest %}class="active"{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 id="navbar">Characters</h1>
+
+        <span class="pull-right" style="margin-top: -50px;">
+            <a class="btn btn-success" href="{{ createURL }}">Add character</a>
+        </span>
+    </div>
+
+    {% if characters is not empty %}
+        {% for character in characters %}
+            <div class="well container" style="margin-bottom: 10px;">
+                <div class="row">
+                    <div class="col-md-1">
+                        <img src="https://image.eveonline.com/Character/{{ character.characterId }}_64.jpg" />
+                    </div>
+                    <div class="col-md-2" style="margin-top: 22px;">
+                        {{ character.characterName }}
+                    </div>
+                    <div class="col-md-2 col-md-offset-7" style="margin-top: 15px;">
+                        <span style="float: right;">
+                            <a href="/characters/remove/{{ character.id }}" class="btn btn-danger">Remove</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

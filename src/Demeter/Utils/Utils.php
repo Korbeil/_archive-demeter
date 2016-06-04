@@ -49,7 +49,7 @@
 
         //////////////////////////////////////////////////////////
         // eve utils
-        public static function buildEveLoginURL() {
+        public static function buildEveLoginURL($scopes = Array()) {
             $params = \Demeter\Utils\GlobalVars::getInstance()->get('eve-sso');
             $base   = $params['base_url'] . $params['auth_url'];
 
@@ -57,7 +57,7 @@
                 'response_type' => 'code',
                 'redirect_uri'  => $params['callback'],
                 'client_id'     => $params['client_id'],
-                'scope'         => '',
+                'scope'         => implode('+', $scopes),
                 'state'         => uniqid('demeter_')
             );
 
